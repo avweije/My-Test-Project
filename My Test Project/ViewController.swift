@@ -31,12 +31,17 @@ class ViewController: UIViewController {
         //genderComboBox = AWComboBox(self.view)
         print("self.view: \(self.view)")
         
-        genderComboBox.setParentView(self.view)
         
-        genderComboBox2.dataSource = ["Man","Vrouw","Transgender","Bankstel","Stoel","Autootje"]
-        genderComboBox2.setParentView(self.view)
+        genderComboBox2.dataSource = ["Man","Vrouw","Transgender","Bankstel","Stoel","Autootje","Vrouw","Transgender","Bankstel","Stoel","Autootje","Vrouw","Transgender","Bankstel","Stoel","Autootje","Vrouw","Transgender","Bankstel","Stoel","Autootje","Vrouw","Transgender","Bankstel","Stoel","Autootje"]
 
         print("dataSource: \(genderComboBox2.dataSource)")
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        genderComboBox.setParentView(self.view)
+        genderComboBox2.setParentView(self.view)
     }
 
     override func didReceiveMemoryWarning() {
