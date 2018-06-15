@@ -115,6 +115,9 @@ class TableViewSideBar: UIView {
                 if let index = buttons.index(of: btn) { buttons.remove(at: index) }
             }
             
+            // safety break, if we cant fit 3 buttons on a 'page', it wont work..
+            if cnt < 3 { return }
+            
             // if there are any 'pages'
             if cnt < buttons.count {
             

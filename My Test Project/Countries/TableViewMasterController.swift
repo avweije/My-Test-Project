@@ -8,8 +8,9 @@
 
 import UIKit
 
-class TableViewMasterController: UIViewController, TableViewSideBarDelegate {
+class TableViewMasterController: UIViewController, TableViewSideBarDelegate, UISearchBarDelegate {
 
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var rightSideBarView: TableViewSideBar!
     
@@ -40,14 +41,8 @@ class TableViewMasterController: UIViewController, TableViewSideBarDelegate {
         super.viewDidLoad()
 
         print("viewDidLoad")
-        
-        //rightSideBarView = TableViewSideBar.init(buttonTitles: buttonTitles)
-        
-        //let buttonTitles = ["A","B","C","D","E","F"]
-        
-        //let buttonTitles = containerView.inputViewController.
-        //containerView.embedded
-        
+
+        //searchBar.search
         rightSideBarView.setDelegate(self)
         
         if embeddedVC != nil {
@@ -55,6 +50,16 @@ class TableViewMasterController: UIViewController, TableViewSideBarDelegate {
             let buttonTitles = embeddedVC!.countryLetters()
 
             rightSideBarView.addButtons(buttonTitles)
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("search for: \(searchText)")
+        
+        if embeddedVC != nil {
+            
+            //embeddedVC?.updateSearchResults(for: UISearchController(searchResultsController: nil))
+            embeddedVC?.updateSearch(searchText)
         }
     }
 

@@ -76,11 +76,61 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     }
 }
 
-class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDelegate {
+class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDelegate, UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        print("need to update the search results")
+        print(String(describing: searchController))
+    }
+    
+    func updateSearch(_ searchText: String) {
+        print("filter on: \(searchText)")
+        
+        self.searchText = searchText
+        
+        if searchText.isEmpty {
+            
+            fCountriesByLetter = countriesByLetter
+            fSections = sections
+        } else {
+            
+            // mapValues ??
+            
+            // BELOW GIVES KEYS (WITH ALL COUNTRIES) THAT CONTAIN 1 COUNTRY MATCH
+            //let filteredKeys = countriesByLetter.filter { (arg) -> Bool in let (_, value) = arg; return value.contains(where: { $0.Name.contains(searchText) }) }
+            
+            let fArray = countriesByLetter.map { (key, value) in  (key,value.filter({ $0.Name.lowercased().contains(searchText.lowercased()) })) }.filter { key,value in value.count > 0 }
 
-    //private var countriesByLetter = Dictionary<String,[String]>()
+            print("** fArray:")
+            print(fArray)
+            
+            fCountriesByLetter = Dictionary(uniqueKeysWithValues: fArray)
+            
+            print("** fCountriesByLetter:")
+            print(fCountriesByLetter)
+            
+            
+            fSections.removeAll()
+            
+            for key in Array(fCountriesByLetter.keys).sorted() {
+                fSections.append((Key: key, Collapsed: false))
+            }
+            
+            //fCountriesByLetter = countriesByLetter.map({key,value in value.Name.contains(searchText) })
+            
+            //dictionary.flatMap({ $0.1.filter({ $0.name == "NameToBeEqual"}) })
+        }
+        
+        tableView.reloadData()
+    }
+    
+
     private var countriesByLetter = Dictionary<String,[(Name: String, Code: String)]>()
     private var sections = [(Key: String, Collapsed: Bool)]()
+    private var searchText = ""
+    private var fCountriesByLetter = Dictionary<String,[(Name: String, Code: String)]>()
+    private var fSections = [(Key: String, Collapsed: Bool)]()
+
     private var selectedCountry = Locale.current.regionCode
     
     // MARK: Public Functions
@@ -91,7 +141,7 @@ class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDele
     
     public func scrollTo(_ sectionKey: String) {
         
-        if let section = sections.index(where: { $0.Key == sectionKey } ) {
+        if let section = fSections.index(where: { $0.Key == sectionKey } ) {
         
             let rect = tableView.rect(forSection: section)
         
@@ -111,6 +161,9 @@ class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDele
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         loadCountries()
+        
+        fCountriesByLetter = countriesByLetter
+        fSections = sections
 
         tableView.estimatedSectionHeaderHeight = 40.0
         tableView.sectionHeaderHeight = 40.0
@@ -119,22 +172,6 @@ class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDele
         tableView.rowHeight = UITableViewAutomaticDimension
         
         tableView.register(CollapsibleTableViewHeader.self, forHeaderFooterViewReuseIdentifier: "Header")
-        
-        /*
-        let view = UIView()
-        view.backgroundColor = UIColor.red
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        tableView.tableHeaderView = view
-        
-        tableView.addConstraints([
-            NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: tableView, attribute: .width, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80)])
-        
-        
-        
-        print("tableHeader: \(String(describing: view.frame))")
-        */
         
         print("selectedCountry: \(String(describing: selectedCountry))")
     }
@@ -183,10 +220,10 @@ class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDele
     // MARK: CollapsableTableViewDelegate
     
     func toggleSection(_ header: CollapsibleTableViewHeader, section: Int) {
-        let collapsed = !sections[section].Collapsed
+        let collapsed = !fSections[section].Collapsed
         
         // Toggle collapse
-        sections[section].Collapsed = collapsed
+        fSections[section].Collapsed = collapsed
         header.setCollapsed(collapsed)
         
         // Reload the whole section
@@ -197,7 +234,7 @@ class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDele
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return sections.count
+        return fSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -205,7 +242,7 @@ class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDele
 
         //return countriesByLetter[sections[section].Key]!.count
         
-        return sections[section].Collapsed ? 0 : countriesByLetter[sections[section].Key]!.count
+        return fSections[section].Collapsed ? 0 : fCountriesByLetter[fSections[section].Key]!.count
     }
 
     /*
@@ -217,9 +254,9 @@ class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDele
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Header") as? CollapsibleTableViewHeader ?? CollapsibleTableViewHeader(reuseIdentifier: "Header")
 
-        header.titleLabel.text = sections[section].Key
+        header.titleLabel.text = fSections[section].Key
         header.arrowLabel.text = ">"
-        header.setCollapsed(sections[section].Collapsed)
+        header.setCollapsed(fSections[section].Collapsed)
         header.section = section
         header.delegate = self
 
@@ -227,11 +264,11 @@ class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDele
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return sections[indexPath.section].Collapsed ? 0 : UITableViewAutomaticDimension
+        return fSections[indexPath.section].Collapsed ? 0 : UITableViewAutomaticDimension
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let country = countriesByLetter[sections[indexPath.section].Key]?[indexPath.row]
+        let country = fCountriesByLetter[fSections[indexPath.section].Key]?[indexPath.row]
         
         if country?.Code == selectedCountry {
             
@@ -260,7 +297,7 @@ class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDele
         //print("row: \(indexPath.row)")
         
         //cell.textLabel?.text = "\(indexPath.section) : \(indexPath.row)"
-        if let country = countriesByLetter[sections[indexPath.section].Key]?[indexPath.row] {
+        if let country = fCountriesByLetter[fSections[indexPath.section].Key]?[indexPath.row] {
             // set the flag ?
             let flag = emojiFlag(country.Code)
 
@@ -284,7 +321,7 @@ class LanguagesController: UITableViewController, CollapsibleTableViewHeaderDele
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedCountry = countriesByLetter[sections[indexPath.section].Key]?[indexPath.row].Code
+        selectedCountry = fCountriesByLetter[fSections[indexPath.section].Key]?[indexPath.row].Code
         
         let cell = tableView.cellForRow(at: indexPath)
         
