@@ -37,49 +37,4 @@ class ViewWithBorder: UIViewController {
         view4.layer.borderColor = UIColor.black.cgColor
         
     }
-    
-    enum borderSide {
-        case Left
-        case Top
-        case Right
-        case Bottom
-    }
-    
-    private func addBorder(_ view: UIView, side: borderSide, color: UIColor = UIColor.gray) {
-        let shapeLayer = CAShapeLayer()
-        let path = UIBezierPath()
-        
-        let width: CGFloat = 5.0
-        let offSet = (width / 2)
-        
-        switch side {
-        case .Left:
-            path.move(to: CGPoint(x: offSet, y: 0))
-            path.addLine(to: CGPoint(x: offSet, y: view.frame.size.height))
-            print("Left")
-        case .Top:
-            path.move(to: CGPoint(x: 0, y: offSet))
-            path.addLine(to: CGPoint(x: view.frame.size.width, y: offSet))
-            print("Top")
-        case .Right:
-            path.move(to: CGPoint(x: view.frame.size.width - offSet, y: 0))
-            path.addLine(to: CGPoint(x: view.frame.size.width - offSet, y: view.frame.size.height))
-            print("Right")
-        case .Bottom:
-            path.move(to: CGPoint(x: 0, y: view.frame.size.height - offSet))
-            path.addLine(to: CGPoint(x: view.frame.size.width, y: view.frame.size.height - offSet))
-            print("Bottom")
-        }
-        
-        shapeLayer.strokeStart = 0
-        shapeLayer.strokeColor = color.cgColor
-        shapeLayer.lineWidth = width
-        shapeLayer.lineJoin = kCALineJoinRound
-        //shapeLayer.lineDashPattern = [1, 3]
-        shapeLayer.path = path.cgPath
-        
-        view.layer.addSublayer(shapeLayer)
-    }
-    
-
 }

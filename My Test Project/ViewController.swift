@@ -7,12 +7,18 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
 
     @IBOutlet weak var genderComboBox: AWComboBox!
     @IBOutlet weak var birthDatePicker: UIDatePicker!
     @IBOutlet weak var genderComboBox2: AWComboBox!
+    @IBOutlet weak var otherComboBox: AWComboBox!
+    
+    @IBOutlet weak var languageButton: UIButton!
+    
+    var audioPlayer = AVAudioPlayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,64 +37,53 @@ class ViewController: UIViewController {
         //genderComboBox = AWComboBox(self.view)
         print("self.view: \(self.view)")
         
-        
+        //genderComboBox.dataSource = ["Man","Vrouw","Transgender"]
+        genderComboBox.textAlignment = .left
         genderComboBox2.dataSource = ["Man","Vrouw","Transgender","Bankstel","Stoel","Autootje","Vrouw","Transgender","Bankstel","Stoel","Autootje","Vrouw","Transgender","Bankstel","Stoel","Autootje","Vrouw","Transgender","Bankstel","Stoel","Autootje","Vrouw","Transgender","Bankstel","Stoel","Autootje"]
+        
+        //
+        //UIApplication.shared.la
+        let langCode = Locale.current.languageCode
+        let prefLanguages = Locale.preferredLanguages
+        let langDesc = Locale.current.localizedString(forLanguageCode: langCode!)
+        
+        print("languageCode: \(String(describing: langCode))")
+        print("languageCode: \(String(describing: langDesc))")
+        print("preferredLanguages: \(String(describing: prefLanguages))")
 
-        print("dataSource: \(genderComboBox2.dataSource)")
+        languageButton.setTitle(langDesc, for: .normal)
+
+        do {
+            let path = Bundle.main.path(forResource: "whoosh", ofType: "mp3")!
+            audioPlayer = try AVAudioPlayer(contentsOf: URL.init(fileURLWithPath: path))
+            audioPlayer.prepareToPlay()
+        } catch {
+            print(error)
+        }
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
-        genderComboBox.setParentView(self.view)
-        genderComboBox2.setParentView(self.view)
+        //genderComboBox.setParentView(self.view)
+        //otherComboBox.setParentView(self.view)
+        //genderComboBox2.setParentView(self.view)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    enum borderSide {
-        case Left
-        case Top
-        case Right
-        case Bottom
+
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            //
+            playAudio()
+        }
     }
     
-    private func addBorder(_ view: UIView, side: borderSide, color: UIColor = UIColor.gray) {
-        let shapeLayer = CAShapeLayer()
-        let path = UIBezierPath()
-        
-        let width: CGFloat = 1.0
-        
-        switch side {
-        case .Left:
-            path.move(to: CGPoint(x: (width / 2), y: width / 2))
-            path.addLine(to: CGPoint(x: (width / 2), y: view.frame.size.height - width / 2))
-            print("Left")
-        case .Top:
-            path.move(to: CGPoint(x: width / 2, y: width / 2))
-            path.addLine(to: CGPoint(x: view.frame.size.width - width / 2, y: width / 2))
-            print("Top")
-        case .Right:
-            path.move(to: CGPoint(x: view.frame.size.width - 2 - width / 2, y: width / 2))
-            path.addLine(to: CGPoint(x: view.frame.size.width - 2 - width / 2, y: view.frame.size.height - width / 2))
-            print("Right")
-        case .Bottom:
-            path.move(to: CGPoint(x: 0, y: view.frame.size.height))
-            path.addLine(to: CGPoint(x: view.frame.size.width, y: view.frame.size.height))
-            print("Bottom")
-        }
-        
-        shapeLayer.strokeStart = 0
-        shapeLayer.strokeColor = color.cgColor
-        shapeLayer.lineWidth = width
-        shapeLayer.lineJoin = kCALineJoinRound
-        //shapeLayer.lineDashPattern = [1, 3]
-        shapeLayer.path = path.cgPath
-        
-        view.layer.addSublayer(shapeLayer)
+    private func playAudio() {
+        audioPlayer.play()
     }
 }
 

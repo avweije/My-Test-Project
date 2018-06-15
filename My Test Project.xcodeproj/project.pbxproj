@@ -13,8 +13,12 @@
 		6B09B3D120BAB5D4000C61C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B09B3CF20BAB5D4000C61C8 /* Main.storyboard */; };
 		6B09B3D320BAB5D6000C61C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B09B3D220BAB5D6000C61C8 /* Assets.xcassets */; };
 		6B09B3D620BAB5D6000C61C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B09B3D420BAB5D6000C61C8 /* LaunchScreen.storyboard */; };
+		6B1C959B20D00CCA0037E467 /* LanguagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C959A20D00CCA0037E467 /* LanguagesController.swift */; };
 		6B59F94F20C7A7A9006F369C /* AWFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B59F94E20C7A7A9006F369C /* AWFunctions.swift */; };
 		6BA3D38320BD1D0E006E86CE /* ViewWithBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA3D38220BD1D0E006E86CE /* ViewWithBorder.swift */; };
+		6BECCF7920D2955C00398096 /* TableViewSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BECCF7820D2955C00398096 /* TableViewSideBar.swift */; };
+		6BECCF7B20D29B6500398096 /* TableViewMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BECCF7A20D29B6500398096 /* TableViewMasterController.swift */; };
+		6BF82B1220D0F3BB000CB61F /* whoosh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6BF82B1120D0F3BB000CB61F /* whoosh.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,8 +30,12 @@
 		6B09B3D220BAB5D6000C61C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6B09B3D520BAB5D6000C61C8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6B09B3D720BAB5D6000C61C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6B59F94E20C7A7A9006F369C /* AWFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AWFunctions.swift; path = "../../My Library/Global Functions/AWFunctions.swift"; sourceTree = "<group>"; };
+		6B1C959A20D00CCA0037E467 /* LanguagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagesController.swift; sourceTree = "<group>"; };
+		6B59F94E20C7A7A9006F369C /* AWFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AWFunctions.swift; path = "../../My Library/AWFunctions.swift"; sourceTree = "<group>"; };
 		6BA3D38220BD1D0E006E86CE /* ViewWithBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewWithBorder.swift; sourceTree = "<group>"; };
+		6BECCF7820D2955C00398096 /* TableViewSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSideBar.swift; sourceTree = "<group>"; };
+		6BECCF7A20D29B6500398096 /* TableViewMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewMasterController.swift; sourceTree = "<group>"; };
+		6BF82B1120D0F3BB000CB61F /* whoosh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = whoosh.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +68,8 @@
 		6B09B3CA20BAB5D4000C61C8 /* My Test Project */ = {
 			isa = PBXGroup;
 			children = (
+				6BF82B1320D0F3DA000CB61F /* Countries */,
+				6BF82B1020D0F3A4000CB61F /* Music */,
 				6B09B3CB20BAB5D4000C61C8 /* AppDelegate.swift */,
 				6B021F8720C16D7800F2EA83 /* AWComboBox.swift */,
 				6B59F94E20C7A7A9006F369C /* AWFunctions.swift */,
@@ -71,6 +81,24 @@
 				6B09B3D720BAB5D6000C61C8 /* Info.plist */,
 			);
 			path = "My Test Project";
+			sourceTree = "<group>";
+		};
+		6BF82B1020D0F3A4000CB61F /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				6BF82B1120D0F3BB000CB61F /* whoosh.mp3 */,
+			);
+			path = Music;
+			sourceTree = "<group>";
+		};
+		6BF82B1320D0F3DA000CB61F /* Countries */ = {
+			isa = PBXGroup;
+			children = (
+				6BECCF7A20D29B6500398096 /* TableViewMasterController.swift */,
+				6BECCF7820D2955C00398096 /* TableViewSideBar.swift */,
+				6B1C959A20D00CCA0037E467 /* LanguagesController.swift */,
+			);
+			path = Countries;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -105,6 +133,11 @@
 				TargetAttributes = {
 					6B09B3C720BAB5D4000C61C8 = {
 						CreatedOnToolsVersion = 9.3.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -131,6 +164,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BF82B1220D0F3BB000CB61F /* whoosh.mp3 in Resources */,
 				6B09B3D620BAB5D6000C61C8 /* LaunchScreen.storyboard in Resources */,
 				6B09B3D320BAB5D6000C61C8 /* Assets.xcassets in Resources */,
 				6B09B3D120BAB5D4000C61C8 /* Main.storyboard in Resources */,
@@ -145,8 +179,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B021F8820C16D7800F2EA83 /* AWComboBox.swift in Sources */,
+				6B1C959B20D00CCA0037E467 /* LanguagesController.swift in Sources */,
+				6BECCF7920D2955C00398096 /* TableViewSideBar.swift in Sources */,
 				6B09B3CE20BAB5D4000C61C8 /* ViewController.swift in Sources */,
 				6B59F94F20C7A7A9006F369C /* AWFunctions.swift in Sources */,
+				6BECCF7B20D29B6500398096 /* TableViewMasterController.swift in Sources */,
 				6B09B3CC20BAB5D4000C61C8 /* AppDelegate.swift in Sources */,
 				6BA3D38320BD1D0E006E86CE /* ViewWithBorder.swift in Sources */,
 			);
@@ -293,6 +330,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 49UH89JMD6;
 				INFOPLIST_FILE = "My Test Project/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -310,6 +348,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 49UH89JMD6;
 				INFOPLIST_FILE = "My Test Project/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
